@@ -141,30 +141,45 @@
 //         ##Copyright
 
 //         Coding Boot Camp© 2016. All Rights Reserved.
+
 function BasicCard(front, back) {
-    this.front = front;
-    this.back = back;
-
-}
-
-function ClozeCard(text, close) {
-    this.text = text;
-    this.cloze = cloze;
-    this.partial = partial;
-    this.fullText = full;
-    this.only_the_cloze = function() {
-        if (this.only_the_cloze === true) {
-            console.log(this.cloze);
-        }
-    }
-    this.only_the_partial = function() {
-        if (this.only_the_partial === true) {
-            console.log(this.partial);
-        }
-    }
-    this.only_the_full = function() {
-        if (this.only_the_full === true) {
-            console.log(this.fullText);
-        }
+    if (this instanceof BasicCard) {
+        this.front = front;
+        this.back = back;
+    } else {
+        return new BasicCard(front, back);
     }
 }
+
+function ClozeCard(fullText, cloze) {
+    if (this instanceof ClozeCard) {
+        this.fullText = fullText;
+        this.cloze = cloze;
+        this.partial = partial;
+    } else {
+        return new ClozeCard(fullText, cloze);
+    }
+}
+
+
+var firstPresident = BasicCard("Who was the first president of the United States?", "George Washington");
+// // "Who was the first president of the United States?"
+console.log("This is front", firstPresident.front);
+
+// // "George Washington"
+console.log("This is back", firstPresident.back);
+
+
+var firstPresidentCloze = new ClozeCard("George Washington was the first president of the United States.", "George Washington");
+
+// // "George Washington"
+console.log("This is cloze", firstPresidentCloze.cloze);
+
+// // " ... was the first president of the United States.
+console.log("This is partial ", firstPresidentCloze.partial);
+
+// // "George Washington was the first president of the United States.
+console.log("This is full text ", firstPresidentCloze.fullText);
+
+// // Should throw or log an error because "oops" doesn't appear in "This doesn't work"
+var brokenCloze = ClozeCard("This doesn't work", "oops");
